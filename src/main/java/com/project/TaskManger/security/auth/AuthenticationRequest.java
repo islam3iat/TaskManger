@@ -1,4 +1,4 @@
-package com.project.TaskManger.auth;
+package com.project.TaskManger.security.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,9 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class AuthenticationRequest {
-    private String email;
-    private String password;
+
+  private String email;
+  String password;
 }
