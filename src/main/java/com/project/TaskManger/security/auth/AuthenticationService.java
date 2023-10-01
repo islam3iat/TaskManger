@@ -2,6 +2,7 @@ package com.project.TaskManger.security.auth;
 
 
 import com.project.TaskManger.security.config.JwtService;
+import com.project.TaskManger.security.user.UserDto;
 import com.project.TaskManger.security.user.Role;
 import com.project.TaskManger.security.user.User;
 import com.project.TaskManger.security.user.UserRepository;
@@ -19,13 +20,13 @@ public class AuthenticationService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
 
-  public AuthenticationResponse register(RegisterRequest request) {
+  public AuthenticationResponse register(UserDto request) {
     var user = User.builder()
         .firstname(request.getFirstname())
         .lastname(request.getLastname())
         .email(request.getEmail())
         .password(passwordEncoder.encode(request.getPassword()))
-        .role(Role.USER)
+        .role(request.getRole())
         .build();
     repository.save(user);
     var jwtToken = jwtService.generateToken(user);
@@ -34,7 +35,7 @@ public class AuthenticationService {
         .build();
   }
 
-  public AuthenticationResponse authenticate(AuthenticationRequest request) {
+  public AuthenticationResponse authenticate(UserDto request) {
     authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(
             request.getEmail(),
