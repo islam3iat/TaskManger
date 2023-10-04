@@ -2,6 +2,9 @@ package com.project.TaskManger.taskScheduling;
 
 import com.project.TaskManger.exception.DuplicateResourceException;
 import com.project.TaskManger.exception.NotFoundException;
+import com.project.TaskManger.notification.Mail;
+import com.project.TaskManger.notification.MailService;
+import com.project.TaskManger.security.user.UserRepository;
 import com.project.TaskManger.task.Priority;
 import com.project.TaskManger.task.Status;
 import com.project.TaskManger.task.Task;
@@ -23,7 +26,10 @@ import java.util.List;
 public class TaskSchedulingService  {
     private final TaskSchedulingRepository taskSchedulingRepository;
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
     private final Clock clock;
+    private final MailService mailService;
+
     public void addTaskSchedule(int id,TaskSchedulingDto request){
         if(taskSchedulingRepository.existsTaskSchedulingByTaskId(id)){
             DuplicateResourceException duplicateResourceException = new DuplicateResourceException("task with id [%s] have schedule".formatted(id));
@@ -71,23 +77,39 @@ public class TaskSchedulingService  {
         if(changes)
             taskSchedulingRepository.save(taskScheduling);
     }
-    @Scheduled(cron = "*/2 * * * * *")
+    @Scheduled(cron = "*/60 * * * * *")
     public void taskStatusCheck(){
         List<TaskScheduling> schedules = taskSchedulingRepository.findAll();
         schedules.stream().
                 filter(s -> s.getTask().getStatus().equals(Status.IN_PROGRESS)||s.getTask().getStatus().equals(Status.TO_DO)).
                 forEach(ts -> {
                     if(isStale(ts)){
-                        ts.getTask().setStatus(Status.STALLED);
-                        ts.getTask().setPriority(Priority.LOW);
-                        taskSchedulingRepository.save(ts);
+                        updateExtractedTask(ts,Status.STALLED,Priority.LOW);
+                        mailService.sendEmail(new Mail(getEmail(ts),
+                                "task has been staled",
+                                "task [%s] has been in in progress but schedule due date for to long".
+                                        formatted(ts.getTask().getTitle())));
                     }
                     else if(isArgent(ts)){
-                        ts.getTask().setStatus(Status.NEED_INTENTION);
-                        ts.getTask().setPriority(Priority.HIGH);
-                        taskSchedulingRepository.save(ts);
+                        updateExtractedTask(ts,Status.NEED_INTENTION,Priority.HIGH);
+                        mailService.sendEmail(new Mail(getEmail(ts),
+                                "task  need intention",
+                                "task [%s]  in in progress and schedule due date is close to set".
+                                        formatted(ts.getTask().getTitle())));
                     }
                 });
+    }
+    private void updateExtractedTask(TaskScheduling ts,Status status,Priority priority) {
+        ts.getTask().setStatus(status);
+        ts.getTask().setPriority(priority);
+        taskSchedulingRepository.save(ts);
+    }
+
+    private String getEmail(TaskScheduling ts) {
+        Integer userId = ts.getTask().getUser().getId();
+        return userRepository.findById(userId).orElseThrow(() ->
+                new NotFoundException("user with id [%s] not found".formatted(userId))).
+                getEmail();
     }
 
     public boolean isStale(TaskScheduling ts){
