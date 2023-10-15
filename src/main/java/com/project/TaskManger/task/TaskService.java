@@ -5,16 +5,15 @@ import com.project.TaskManger.exception.NotFoundException;
 import com.project.TaskManger.security.config.JwtService;
 import com.project.TaskManger.security.user.User;
 import com.project.TaskManger.security.user.UserRepository;
-import com.project.TaskManger.taskScheduling.TaskScheduling;
+
 import com.project.TaskManger.taskScheduling.TaskSchedulingDto;
-import com.project.TaskManger.taskScheduling.TaskSchedulingRepository;
+
 import com.project.TaskManger.taskScheduling.TaskSchedulingService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CompositeIterator;
+
 
 import java.util.Collections;
 import java.util.List;

@@ -17,6 +17,7 @@ public class MailService {
         message.setSubject(mail.getSubject());
         message.setText(mail.getText());
         javaMailSender.send(message);
+
     }
 
 

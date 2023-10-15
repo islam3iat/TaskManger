@@ -3,6 +3,7 @@ package com.project.TaskManger.task;
 import com.github.javafaker.Faker;
 import com.project.TaskManger.category.Category;
 import com.project.TaskManger.category.CategoryRepository;
+import com.project.TaskManger.notification.MailService;
 import com.project.TaskManger.security.config.JwtService;
 import com.project.TaskManger.security.user.Role;
 import com.project.TaskManger.security.user.User;
@@ -46,12 +47,14 @@ class TaskServiceTest {
     private TaskSchedulingRepository schedulingRepository;
     @Mock
     private Clock clock;
+    @Mock
+    private MailService mailService;
 
     protected static final Faker FAKER=new Faker();
 
     @BeforeEach
     void setUp() {
-        schedulingService=new TaskSchedulingService(schedulingRepository,taskRepository,clock);
+        schedulingService=new TaskSchedulingService(schedulingRepository,taskRepository,userRepository,clock,mailService);
         underTest=new TaskService(taskRepository,jwtService,userRepository,categoryRepository,schedulingService);
     }
 
@@ -95,6 +98,7 @@ class TaskServiceTest {
         when(taskRepository.existsTasksById(10)).thenReturn(true);
         //When
         underTest.addTaskWithSchedule(taskWithSchedule,token);
+
         //Then
         ArgumentCaptor<Task> argumentCaptor=ArgumentCaptor.forClass(Task.class);
         verify(taskRepository).save(argumentCaptor.capture());

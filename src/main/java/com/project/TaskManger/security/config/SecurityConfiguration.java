@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -27,22 +28,18 @@ public class SecurityConfiguration {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
-        .csrf()
-        .disable()
-        .authorizeHttpRequests()
-        .requestMatchers("/api/v1/auth/**")
-        .permitAll()
+        .csrf(AbstractHttpConfigurer::disable)
+        .authorizeHttpRequests(request->request
+                .requestMatchers("/api/v1/auth/**")
+                .permitAll()
+                .requestMatchers("/").permitAll().requestMatchers("http://localhost:8080").permitAll().anyRequest().permitAll())
 //            .requestMatchers("api/v1/category/**").hasRole(ADMIN.name())
 //              .requestMatchers(GET, "api/v1/category/**").hasAuthority(String.valueOf(Role.ADMIN))
 //            .requestMatchers(POST, "api/v1/category/**").hasAuthority(String.valueOf(Role.ADMIN))
 //            .requestMatchers(PUT, "api/v1/category/**").hasAuthority(String.valueOf(Role.ADMIN))
 //            .requestMatchers(DELETE, "api/v1/category/**").hasAuthority(String.valueOf(Role.ADMIN))
-        .anyRequest()
-        .authenticated()
-        .and()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
+        .sessionManagement(session->session.
+                sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authenticationProvider(authenticationProvider)
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
