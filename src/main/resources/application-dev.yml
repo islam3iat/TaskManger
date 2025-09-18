@@ -1,0 +1,17 @@
+#DataBase
+MYSQL_USERNAME: dark3
+MYSQL_PASSWORD: 0556559704Islam
+MYSQL_HOST: localhost
+MYSQL_PORT: 3307
+MYSQL_DB: task-manger
+#Server
+SERVER_PORT: 8080
+ACTIVE_PROFILE: dev
+#Email Config
+EMAIL_HOST: smtp.gmail.com
+EMAIL_PORT: 587
+EMAIL_ID: patikaislam3@gmail.com
+EMAIL_PASSWORD: ctpx lsag iqko srbx
+VERIFY_EMAIL_HOST: http://localhost:/${SERVER_PORT}
+
+
