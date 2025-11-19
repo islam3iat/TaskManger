@@ -77,7 +77,7 @@ public class TaskSchedulingService  {
         if(changes)
             taskSchedulingRepository.save(taskScheduling);
     }
-    @Scheduled(cron = "*/60 * * * * *")
+    @Scheduled(cron = "*/59 * * * * *")
     public void taskStatusCheck(){
         List<TaskScheduling> schedules = taskSchedulingRepository.findAll();
         schedules.stream().

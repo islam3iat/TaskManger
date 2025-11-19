@@ -1,5 +1,7 @@
 package com.project.TaskManger.task;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +16,8 @@ import static org.springframework.http.HttpHeaders.*;
 @RestController
 @RequestMapping("/api/v1/task")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
+@Tag(name = "Task")
 public class TaskController {
     private final TaskService taskService;
     @PostMapping

@@ -1,5 +1,6 @@
 package com.project.TaskManger.category.label;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,6 +9,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/v1/labels")
 @RequiredArgsConstructor
+@Tag(name = "Label")
 public class LabelController {
     private final LabelService labelService;
     @PostMapping

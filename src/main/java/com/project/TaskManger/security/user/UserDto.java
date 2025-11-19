@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
@@ -16,6 +17,8 @@ import java.io.Serializable;
  */
 @Value
 @AllArgsConstructor
+@Builder
+
 public class UserDto implements Serializable {
     @NotNull
     @NotEmpty

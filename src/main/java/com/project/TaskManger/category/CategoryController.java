@@ -1,5 +1,6 @@
 package com.project.TaskManger.category;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import java.util.List;
 @RequestMapping("api/v1/category")
 @RequiredArgsConstructor
 @PreAuthorize("hasAuthority('ADMIN')")
+@Tag(name = "Category")
 public class CategoryController {
     private final CategoryService categoryService;
 
