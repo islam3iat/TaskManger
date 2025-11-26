@@ -11,7 +11,7 @@
 	<groupId>com.project</groupId>
 	<artifactId>TaskManager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>TaskManger</name>
+	<name>TaskManager</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>18</java.version>

@@ -1,0 +1,40 @@
+package com.project.TaskManager.security.user;
+
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Value;
+
+import java.io.Serializable;
+
+/**
+ * DTO for {@link com.project.TaskManager.security.user.User}
+ */
+@Value
+@AllArgsConstructor
+@Builder
+
+public class UserDto implements Serializable {
+    @NotNull
+    @NotEmpty
+    @NotBlank
+   final String firstname;
+    @NotNull
+    @NotEmpty
+    @NotBlank
+    final String lastname;
+    @NotNull
+    @NotEmpty
+    @NotBlank
+    @Email
+    final String email;
+    @NotNull
+    @NotEmpty
+    @NotBlank
+   final String password;
+    Role role;
+}
