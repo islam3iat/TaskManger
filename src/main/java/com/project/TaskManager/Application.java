@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Bean;
 
 
 @SpringBootApplication
-public class  TaskMangerApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TaskMangerApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 
